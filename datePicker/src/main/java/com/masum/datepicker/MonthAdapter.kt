@@ -21,6 +21,7 @@ class MonthAdapter(private val context: Context, private val listener: OnSelecte
     private var selectedItem = -1
     private var color = 0
     private var monthType: MonthType
+    private var monthsEnable: Array<Boolean>
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MonthHolder {
         return MonthHolder(
             LayoutInflater.from(context).inflate(R.layout.item_view_month, parent, false)
@@ -29,13 +30,15 @@ class MonthAdapter(private val context: Context, private val listener: OnSelecte
 
     override fun onBindViewHolder(holder: MonthHolder, position: Int) {
         if (monthType == MonthType.NUMBER) {
-            holder.textViewMonth.text = (position + 1).toString() + ""
+            holder.textViewMonth.text = (position + 1).toString()
         } else {
-            holder.textViewMonth.text = months[position]
+            holder.textViewMonth.text = months[position].capitalize(Locale.ROOT)
         }
+        holder.textViewMonth.isEnabled = monthsEnable[position]
+        holder.layoutMain.isClickable = monthsEnable[position]
 
 //        holder.textViewMonth.setTextColor(selectedItem == position ? Color.WHITE : Color.BLACK);
-        holder.itemView.isSelected = if (selectedItem == position) true else false
+        holder.itemView.isSelected = selectedItem == position
     }
 
     override fun getItemCount(): Int {
@@ -52,7 +55,7 @@ class MonthAdapter(private val context: Context, private val listener: OnSelecte
     }
 
     fun setSelectedItem(index: Int) {
-        if (index < 12 || index > -1) {
+        if (index < 12 && index > -1) {
             selectedItem = index
             notifyItemChanged(selectedItem)
         }
@@ -64,6 +67,11 @@ class MonthAdapter(private val context: Context, private val listener: OnSelecte
 
     fun setColor(color: Int) {
         this.color = color
+        notifyDataSetChanged()
+    }
+
+    fun setMonthEnable(monthsEnable : Array<Boolean>){
+        this.monthsEnable = monthsEnable
         notifyDataSetChanged()
     }
 
@@ -80,7 +88,7 @@ class MonthAdapter(private val context: Context, private val listener: OnSelecte
         }
     val shortMonth: String
         get() = if (monthType == MonthType.NUMBER) {
-            (selectedItem + 1).toString() + ""
+            (selectedItem + 1).toString()
         } else {
             months[selectedItem]
         }
@@ -121,6 +129,11 @@ class MonthAdapter(private val context: Context, private val listener: OnSelecte
 //            itemView.setClickable(true);
             itemView.setOnClickListener(this)
         }
+
+        fun setEnable(isEnable : Boolean){
+            textViewMonth.isEnabled = isEnable
+        }
+
     }
 
     interface OnSelectedListener {
@@ -129,6 +142,7 @@ class MonthAdapter(private val context: Context, private val listener: OnSelecte
 
     init {
         months = DateFormatSymbols(Locale.ENGLISH).shortMonths
+        monthsEnable = Array(12) { true }
         monthType = MonthType.TEXT
     }
 }

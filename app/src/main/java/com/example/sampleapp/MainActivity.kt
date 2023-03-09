@@ -9,6 +9,7 @@ import com.masum.datepicker.MonthPicker
 import com.masum.datepicker.MonthType
 import com.masum.datepicker.listener.DateMonthDialogListener
 import com.masum.datepicker.listener.OnCancelMonthDialogListener
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     lateinit var monthPicker: MonthPicker
@@ -44,5 +45,15 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+        monthPicker.setLimitDate(
+            newBeginDate = Calendar.getInstance().apply {
+                set(Calendar.YEAR, 2020)
+                set(Calendar.MONTH, 4)
+            }.time,
+            newEndDate = Calendar.getInstance().apply {
+                set(Calendar.YEAR, 2025)
+                set(Calendar.MONTH, 8)
+            }.time
+        )
     }
 }
