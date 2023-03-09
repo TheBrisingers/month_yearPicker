@@ -76,7 +76,7 @@ class MonthAdapter(private val context: Context, private val listener: OnSelecte
     }
 
     val month: Int
-        get() = selectedItem + 1
+        get() = selectedItem
     val startDate: Int
         get() = 1
     val endDate: Int

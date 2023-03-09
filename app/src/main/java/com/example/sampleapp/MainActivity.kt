@@ -13,12 +13,15 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
     lateinit var monthPicker: MonthPicker
+    var currentdate = Calendar.getInstance()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         var btnMonth = findViewById<Button>(R.id.btn_month)
         btnMonth.setOnClickListener {
-            monthPicker.show()
+            monthPicker.setSelectedMonth(currentdate.get(Calendar.MONTH))
+            monthPicker.setSelectedYear(currentdate.get(Calendar.YEAR))
+            monthPicker.show(currentdate.get(Calendar.MONTH), currentdate.get(Calendar.YEAR))
         }
         callMonthPicker()
     }
@@ -26,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     fun callMonthPicker() {
         monthPicker = MonthPicker(this)
-        monthPicker.setMonthType(MonthType.TEXT)
+        monthPicker.setMonthType(MonthType.NUMBER)
         monthPicker.setPositiveButton(object : DateMonthDialogListener {
             override fun onDateMonth(
                 month: Int,
@@ -36,6 +39,7 @@ class MainActivity : AppCompatActivity() {
                 monthLabel: String?
             ) {
                 Log.e("data", month.toString() + " " + year.toString())
+                currentdate = Calendar.getInstance().apply { set(year, month, 1) }
             }
         })
 

@@ -39,10 +39,10 @@ class MonthPicker {
         builder = Builder()
     }
 
-    fun show() {
+    fun show(month: Int? = null, year: Int? = null) {
         if (isBuild) {
             mAlertDialog!!.show()
-            builder.setDefault()
+            builder.setDefault(month, year)
         } else {
             builder.build()
             isBuild = true
@@ -125,12 +125,12 @@ class MonthPicker {
         }
 
         //set default config
-        fun setDefault() {
+        fun setDefault(selectedMonth: Int?, selectedYear: Int?) {
             val date = Date()
             val cal = Calendar.getInstance()
             cal.time = date
-            year = cal[Calendar.YEAR]
-            month = cal[Calendar.MONTH]
+            year = selectedYear ?: cal[Calendar.YEAR]
+            month = selectedMonth ?: cal[Calendar.MONTH]
             monthAdapter.setSelectedItem(month)
             setTitle(monthAdapter.shortMonth, year)
             monthAdapter.notifyDataSetChanged()
@@ -274,7 +274,7 @@ class MonthPicker {
         }
 
         override fun onContentSelected() {
-            month = monthAdapter.month - 1
+            month = monthAdapter.month
             setTitle(monthAdapter.shortMonth, year)
         }
 
