@@ -13,7 +13,11 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
     lateinit var monthPicker: MonthPicker
-    var currentdate = Calendar.getInstance()
+    var currentdate = Calendar.getInstance().apply {
+        set(Calendar.MONTH, 10)
+        set(Calendar.YEAR, 2020)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

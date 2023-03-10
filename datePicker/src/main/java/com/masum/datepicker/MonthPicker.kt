@@ -133,7 +133,7 @@ class MonthPicker {
             month = selectedMonth ?: cal[Calendar.MONTH]
             monthAdapter.setSelectedItem(month)
             setTitle(monthAdapter.shortMonth, year)
-            monthAdapter.notifyDataSetChanged()
+            checkMonthsEnable()
         }
 
         fun setLocale(locale: Locale?) {
@@ -142,6 +142,7 @@ class MonthPicker {
 
         fun setSelectedMonth(index: Int) {
             monthAdapter.setSelectedItem(index)
+            month = index
             setTitle(monthAdapter.shortMonth, year)
         }
 
